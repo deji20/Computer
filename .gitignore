@@ -1,0 +1,7 @@
+# git ignore 
+node_modules
+.next
+build
+models
+target
+**/*.wav
