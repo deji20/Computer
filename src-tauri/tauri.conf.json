@@ -1,9 +1,9 @@
 {
   "build": {
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "cd ui && npm run build",
     "beforeDevCommand": "cd ui && npm run dev",
     "devPath": "http://localhost:3000",
-    "distDir": "../out"
+    "distDir": "../ui/out"
   },
   "package": {
     "productName": "Hearth",
@@ -11,11 +11,11 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": true
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
+      "category": "Utility",
       "copyright": "",
       "deb": {
         "depends": []
@@ -28,7 +28,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "computer.hearth",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -38,7 +38,7 @@
         "signingIdentity": null
       },
       "resources": [],
-      "shortDescription": "",
+      "shortDescription": "An central AI OS for your home",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,

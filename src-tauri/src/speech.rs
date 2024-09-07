@@ -1,4 +1,4 @@
-use ollama_rs::{error::OllamaError, generation::completion::{request::GenerationRequest, GenerationResponse, GenerationResponseStream}, Ollama};
+use ollama_rs::{error::OllamaError, generation::{completion::{request::GenerationRequest, GenerationResponse, GenerationResponseStream}, parameters::FormatType}, Ollama};
 use tokio_stream::{Stream, StreamExt};
 
 pub struct Speech{
@@ -25,7 +25,7 @@ impl Default for Speech {
 }
 
 impl Speech {
-    pub fn new(model: String) -> Self {
+    pub fn new(model: String, system_prompt: String) -> Self {
         Self {
             model,
             ollama: Ollama::default()
@@ -42,11 +42,18 @@ impl Speech {
             for resp in responses {
                 //clear console
                 // print!("\x1B[2J\x1B[1;1H");
-                println!("{}", response);
+                print!("{}", response);
                 response.push_str(&resp.response);
             }
         }
         Ok(response)
+    }
+
+    pub async fn call(&self, question: String) -> Result<String, Box<dyn std::error::Error>> {
+        let request = GenerationRequest::new(self.model.clone(), question)
+            .format(FormatType::Json);
+        let response = self.ollama.generate(request).await?;
+        Ok(response.response)
     }
 
     pub async fn respond_stream(&self, question: String) -> Result<GenerationResponseStream, OllamaError> {

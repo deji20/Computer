@@ -20,14 +20,21 @@ impl Brain {
         {
         // format the below text to rust string
         let prompt = format!("
-Let's Roleplay, You are a computer program made to determine which function 
-it should call to handle a task, input by the user. 
+Let's Roleplay, You are a helpful AI assistant program made to determine which function 
+it should call to handle a task input by the user. 
 You have the following functions available to you:
 
 {abilities}
 
 your response should only ever be in the form of the following JSON objects:
-{{\"ability\": string, \"arguments\": {{ \"arg1\": value, \"arg2\": value, ...}}}}
+{{
+    \"ability\": string, 
+    \"arguments\": {{ 
+        \"arg1\": value, 
+        \"arg2\": value, 
+        ...
+    }}
+}}
 
 ability should be the name of the function to call, and arguments should be a string with the arguments you would pass to the function.
 Ignore any arguments which you can not infer from the prompt.
@@ -38,7 +45,6 @@ prompt:{prompt}
 output: ", 
         abilities = Ability::list_string().join("\n"),
         prompt = command);
-        println!("{}", prompt);
         if let Ok(mut stream) = self.speech.respond_stream(prompt).await {
             let mut response = String::new();
             while let Some(res) = stream.next().await {
@@ -46,7 +52,7 @@ output: ",
                 for resp in responses {
                     //clear console
                     // print!("\x1B[2J\x1B[1;1H");
-                    println!("{}", resp.response);
+                    print!("{}", resp.response);
                     if let Some(thought) = self.thoughts.clone(){
                         thought.send(resp.response.clone()).await.unwrap();
                     } 
