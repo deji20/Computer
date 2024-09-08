@@ -77,7 +77,7 @@ async fn start(window: Window) -> Result<(), String> {
                   // window.emit("speak", format!("Searching for movies with the query: {}", args.movie)).unwrap();
                   println!("Searching for movies with the query: {}", args.movie);
                   let url = format!("https://api.themoviedb.org/3/search/movie?api_key={}&query={}&year={}", config.media.tmdb_key, args.movie, args.year.unwrap_or(0));
-                  println!("url: {]", )
+                  println!("url: {}", url);
                   let client = reqwest::Client::new();
                   let movies = &client.get(&url).send()
                     .await.map_err(|e| format!("Error: {}", e))?
