@@ -29,15 +29,15 @@ export default function Home() {
   })
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between bg-[#222223] font-karla text-white">
-      <div className={"flex flex-col justify-center align-middle gap-4 h-screen w-screen bg-black bg-opacity-50 "}> 
+    <main className="flex min-h-screen flex-col items-center justify-between font-karla text-white">
+      <div className={"flex flex-col justify-center align-middle gap-4 h-screen w-screen "}> 
         <AnimatePresence>
-          {!(brain.thinking || brain.awake) ? 
-          <Thinking className="border justify-center"> 
-            <AnimatedText className="w-min m-auto mb-0 h-min" text={text} />
-            <AnimatedSound className="" sound={wave}/> 
+          {(brain.thinking || brain.awake) ? 
+          <Thinking className="justify-center w-screen h-screen bg-[#0c0c4c]"> 
+            <AnimatedText className="absolute bottom-10 left-0 w-full text-center h-min" text={text} />
+            <AnimatedSound className="px-3 animate-pulse" sound={wave}/> 
           </Thinking> : 
-          <p className="w-full text-center animate-pulse text-2xl text-gray-900">Sleeping...</p>
+          <p className="w-full text-center animate-pulse text-2xl text-sky-950">Sleeping...</p>
           }
         </AnimatePresence>
         {display.page == "Movies" && <MoviePage movies={display.props} />}

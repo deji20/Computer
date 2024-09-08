@@ -49,7 +49,7 @@ async fn start(window: Window) -> Result<(), String> {
       }
     };
   };
-  // let _ = listener.wake();
+  let _ = listener.wake();
   
   window.emit("loading", true).unwrap();
   window.emit("speak", "Listening...".to_string()).unwrap();
@@ -74,8 +74,10 @@ async fn start(window: Window) -> Result<(), String> {
                 ability.run(|args: Option<MovieArgs>| async {
                   let Some(args) = args else { return Err("No Arguments".to_string()) }; 
                   let config = crate::config::Config::get_config();
-                  window.emit("speak", format!("Searching for movies with the query: {}", args.movie)).unwrap();
+                  // window.emit("speak", format!("Searching for movies with the query: {}", args.movie)).unwrap();
+                  println!("Searching for movies with the query: {}", args.movie);
                   let url = format!("https://api.themoviedb.org/3/search/movie?api_key={}&query={}&year={}", config.media.tmdb_key, args.movie, args.year.unwrap_or(0));
+                  println!("url: {]", )
                   let client = reqwest::Client::new();
                   let movies = &client.get(&url).send()
                     .await.map_err(|e| format!("Error: {}", e))?
