@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from "react"
 import { MovieResults, MovieSearch } from "../models/movieModels"
 import Image from "next/image"
@@ -8,10 +10,9 @@ interface MoviePageProps {
 
 export default function MoviePage(props: MoviePageProps){
     const [movie, setMovie] = useState<MovieSearch>()
-    console.log(props.movies);
     return <div>
         <p>
-            {props.movies?.results.length}
+            {props.movies?.results?.length}
             movies:
         </p>
         {movie ? <div>

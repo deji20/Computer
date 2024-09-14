@@ -1,3 +1,5 @@
+'use client';
+
 import {useEffect, useState} from "react";
 import { MovieSearch } from "../models/movieModels";
 import { event, invoke } from "@tauri-apps/api";
