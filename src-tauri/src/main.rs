@@ -50,8 +50,8 @@ async fn start(window: Window) -> Result<(), String> {
     };
   };
   loop {
-    window.emit("loading", false).unwrap();
-    let _ = listener.wake();
+    // window.emit("loading", false).unwrap();
+    // let _ = listener.wake();
     
     window.emit("loading", true).unwrap();
     window.emit("speak", "Listening...".to_string()).unwrap();

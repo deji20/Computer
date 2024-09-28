@@ -1,19 +1,19 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MoviePage from "./display/movies";
 import UseBrain from "./brain/useBrain";
 import AnimatedText from "../components/animatedText";
 import Thinking from "../components/thinking";
 import { AnimatePresence } from "framer-motion";
 import AnimatedSound from "@/components/animatedSound";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from '@tauri-apps/api/tauri';
 
-// invoke("start").then((response) => console.log(response))
 
 export default function Home() {
+  useEffect(() => { invoke("start") }, [])
   const [text, setText] = useState<string>("hello world");
-  const [display, setDisplay] = useState<{page: "Movies" | "Home", props: any,}>({ page: "Movies", props: {
+  const [display, setDisplay] = useState<{page: "Movies" | "Home", props: any,}>({ page: "Home", props: {
 
   } });
   const [error, setError] = useState<string>("");
@@ -39,7 +39,8 @@ export default function Home() {
             <AnimatedSound className="px-3 animate-pulse" sound={wave}/> 
           </Thinking> : 
           display.page == "Home" ? <p className="w-full text-center animate-pulse text-2xl text-sky-950">Sleeping...</p>
-          : display.page == "Movies" ? <MoviePage movies={display.props} />
+          : display.page == "Movies" ? <MoviePage movies={display.props} /> 
+          : <p className="w-full text-center animate-pulse text-2xl text-sky-950">Sleeping...</p>
           }
         </AnimatePresence>
         {error && <div className="absolute h-1/2 w-full">

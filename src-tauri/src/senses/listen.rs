@@ -121,7 +121,7 @@ impl Listener {
             f(input_samples.to_vec());
 
             if let Some(_) = capture { audio.extend(input_samples); }
-            if avg > 0.050 { 
+            if avg > 0.20 { 
                 println!("capturing");
                 capture = Some(SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs());
                 None
