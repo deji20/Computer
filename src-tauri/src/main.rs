@@ -49,11 +49,20 @@ async fn start(window: Window) -> Result<(), String> {
       }
     };
   };
-  loop {
-    // window.emit("loading", false).unwrap();
-    // let _ = listener.wake();
-    
+
+  
+  
+  loop { 
+    //load listening animation
     window.emit("loading", true).unwrap();
+    //start listening
+    window.emit("speak", "SLEEPING...".to_string()).unwrap();
+    let _ = listener.wake(|input_samples| {
+      let avg = input_samples.iter().fold(0.0, |acc, x| acc + x.abs()) / (input_samples.len() as f32); 
+      window.emit("audio", avg).unwrap()
+    });
+
+    //get command    
     window.emit("speak", "Listening...".to_string()).unwrap();
     if let Ok(command) = Listener::get_command(|input_samples| {
       let avg = input_samples.iter().fold(0.0, |acc, x| acc + x.abs()) / (input_samples.len() as f32); 
@@ -65,21 +74,29 @@ async fn start(window: Window) -> Result<(), String> {
     
       match result {
         Ok(result) => {
+          
           println!("transcription: {}", &result);
           window.emit("speak", "Deciding action").unwrap();
           let decision = brain.decision(&result).await;
+
           match decision {
             Ok(ability) => {
               let _ = match ability {
+                
                 Ability::SearchMovies(_) => {
                   window.emit("speak", "Im going to search for movies".to_string()).unwrap();
                   ability.run(|args: Option<MovieArgs>| async {
+                    //parse arguments
                     let Some(args) = args else { return Err("No Arguments".to_string()) }; 
                     let config = crate::config::Config::get_config();
                     // window.emit("speak", format!("Searching for movies with the query: {}", args.movie)).unwrap();
+                    
                     println!("Searching for movies with the query: {}", args.movie);
+                    //create url
                     let url = format!("https://api.themoviedb.org/3/search/movie?api_key={}&query={}&year={}", config.media.tmdb_key, args.movie, args.year.unwrap_or(0));
                     println!("url: {}", url);
+                    
+                    //fetch movies
                     let client = reqwest::Client::new();
                     let movies = &client.get(&url).send()
                       .await.map_err(|e| format!("Error: {}", e))?
@@ -88,6 +105,7 @@ async fn start(window: Window) -> Result<(), String> {
                     Ok("Movies".to_string())
                   }).await
                 },
+                
                 _ => {
                   println!("Ability not implemented");
                   Err("Ability not implemented".to_string())

@@ -93,7 +93,8 @@ impl Listener {
         }
     
 
-    pub fn wake(&mut self) -> Result<RustpotterDetection, String> {
+    pub fn wake<F>(&mut self, mut f: F) -> Result<RustpotterDetection, String> 
+        where F: FnMut(&Vec<f32>) -> () {
         Listener::record(self.rustpotter.get_samples_per_frame(), move |input_samples| {
             //clear console
             print!("\x1B[2J\x1B[1;1H");
@@ -101,7 +102,9 @@ impl Listener {
             println!("Waiting to wake up...");
             println!("Press Ctrl+C to stop recording");
 
-            self.rustpotter.process_samples(input_samples.to_vec())
+            let sample_vec = input_samples.to_vec();
+            f(&sample_vec);
+            self.rustpotter.process_samples(sample_vec)
         })
     }
 

@@ -1,0 +1,20 @@
+{
+    "sqltools.connections": [
+        {
+            "mssqlOptions": {
+                "appName": "SQLTools",
+                "useUTC": true,
+                "encrypt": true
+            },
+            "previewLimit": 50,
+            "server": "movinn-db.cccy5xuad6ho.eu-central-1.rds.amazonaws.com",
+            "port": 1433,
+            "driver": "MSSQL",
+            "database": "Movinn",
+            "password": "Pm8bGliK51#C",
+            "username": "admin",
+            "name": "Api",
+            "group": "Production"
+        }
+    ]
+}

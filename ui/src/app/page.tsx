@@ -11,7 +11,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 
 
 export default function Home() {
-  useEffect(() => { invoke("start") }, [])
+  // useEffect(() => { invoke("start") }, [])
   const [text, setText] = useState<string>("hello world");
   const [display, setDisplay] = useState<{page: "Movies" | "Home", props: any,}>({ page: "Home", props: {
 
@@ -29,7 +29,7 @@ export default function Home() {
       onListen: (audio) => setWave(audio) 
   })
 
-  return (
+  return (  
     <main className="flex min-h-screen flex-col items-center justify-between font-karla text-white">
       <div className={"flex flex-col justify-center align-middle gap-4 h-screen w-screen "}> 
         <AnimatePresence>
